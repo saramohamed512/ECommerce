@@ -3,6 +3,8 @@ using ECommerce.Domain.Contracts;
 using ECommerce.Persistence.Data.DataSeed;
 using ECommerce.Persistence.Data.DbContext;
 using ECommerce.Persistence.Repositories;
+using ECommerce.ServiceAbstraction;
+using ECommerce.Services;
 using ECommerce.Services.MappingProfiles;
 using ECommerce.web.Extentions;
 using Microsoft.EntityFrameworkCore;
@@ -28,8 +30,13 @@ namespace ECommerce.web
             });
             builder.Services.AddScoped<IDataInitilizer, DataInitilizer>();
 
-            builder.Services.AddAutoMapper(X=> X.AddProfile(new ProductProfile()));
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(); var app = builder.Build();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddAutoMapper(X => X.AddProfile(new ProductProfile()));
+
+            builder.Services.AddScoped<IProductService, ProductService>();
+
+
+            var app = builder.Build();
 
 
             #region DataSeed
