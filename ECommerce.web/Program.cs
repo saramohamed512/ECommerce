@@ -9,7 +9,7 @@ namespace ECommerce.web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -31,8 +31,8 @@ namespace ECommerce.web
 
             #region DataSeed
 
-            app.MigrateDb();
-            app.SeedDb();
+            await app.MigrateDbAsync();
+            await app.SeedDbAsync();
             #endregion
 
             // Configure the HTTP request pipeline.

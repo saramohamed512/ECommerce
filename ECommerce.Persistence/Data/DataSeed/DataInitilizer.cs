@@ -18,25 +18,25 @@ namespace ECommerce.Persistence.Data.DataSeed
         {
             _dbContext = dbContext;
         }
-        public void Initilize()
+        public async Task InitilizeAsync()
         {
             try
             {
-                var HasProducts = _dbContext.Products.Any();
-                var HasBrands = _dbContext.ProductBrands.Any();
-                var HasTypes = _dbContext.ProductTypes.Any();
+                var HasProducts =await _dbContext.Products.AnyAsync();
+                var HasBrands = await _dbContext.ProductBrands.AnyAsync();
+                var HasTypes = await  _dbContext.ProductTypes.AnyAsync();
                 if (HasProducts && HasBrands && HasTypes)
                 {
                     return;
                 }
         
                 if (!HasBrands)
-                    SeedDataFromJson<ProductBrand, int>("brands.json", _dbContext.ProductBrands);
+                    await SeedDataFromJsonAsync<ProductBrand, int>("brands.json", _dbContext.ProductBrands);
                 if (!HasTypes)
-                    SeedDataFromJson<ProductType, int>("types.json", _dbContext.ProductTypes);
+                    await SeedDataFromJsonAsync<ProductType, int>("types.json", _dbContext.ProductTypes);
                 _dbContext.SaveChanges();
                 if (!HasProducts)
-                    SeedDataFromJson<Product, int>("products.json", _dbContext.Products);
+                    await SeedDataFromJsonAsync<Product, int>("products.json", _dbContext.Products);
                 _dbContext.SaveChanges();
 
             }
@@ -50,7 +50,7 @@ namespace ECommerce.Persistence.Data.DataSeed
                 throw;
             }
         }
-        private void SeedDataFromJson<T, TKey>(string fileName, DbSet<T> dbset) where T : BaseEntity<TKey>
+        private async Task SeedDataFromJsonAsync<T, TKey>(string fileName, DbSet<T> dbset) where T : BaseEntity<TKey>
         {
             // Get the base directory (usually bin/Debug/net8.0 or bin/Release/net8.0)
             var baseDirectory = AppContext.BaseDirectory;
@@ -109,7 +109,7 @@ namespace ECommerce.Persistence.Data.DataSeed
                 });
                 if (Data is not null)
                 {
-                    dbset.AddRange(Data);
+                    await dbset.AddRangeAsync(Data);
                    
                 }
             }
