@@ -1,5 +1,8 @@
 
+using ECommerce.Domain.Contracts;
+using ECommerce.Persistence.Data.DataSeed;
 using ECommerce.Persistence.Data.DbContext;
+using ECommerce.web.Extentions;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.web
@@ -21,9 +24,16 @@ namespace ECommerce.web
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-
+            builder.Services.AddScoped<IDataInitilizer, DataInitilizer>();
 
             var app = builder.Build();
+
+
+            #region DataSeed
+
+            app.MigrateDb();
+            app.SeedDb();
+            #endregion
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
