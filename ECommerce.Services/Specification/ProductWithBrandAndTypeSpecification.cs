@@ -1,4 +1,5 @@
 ﻿using ECommerce.Domain.Entities.ProductModule;
+using ECommerce.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ namespace ECommerce.Services.Specification
 {
     public class ProductWithBrandAndTypeSpecification: BaseSpecification<Product, int>
     {
-        public ProductWithBrandAndTypeSpecification(int? brandId, int? typeId): base
-            (P=> (!brandId.HasValue || P.BrandId==brandId.Value)&&
-            (!typeId.HasValue|| P.TypeId==typeId.Value))
+        public ProductWithBrandAndTypeSpecification(ProductQueryParams queryParams) : base
+            (P=> (!queryParams.BrandId.HasValue || P.BrandId== queryParams.BrandId.Value)&&
+            (!queryParams.TypeId.HasValue|| P.TypeId== queryParams.TypeId.Value)&&
+            (string.IsNullOrEmpty(queryParams.Search)|| P.Name.ToLower().Contains(queryParams.Search.ToLower())))
         {
             AddInclude(p => p.ProductBrands);
             AddInclude(p => p.ProductTypes);

@@ -3,6 +3,7 @@ using ECommerce.Domain.Contracts;
 using ECommerce.Domain.Entities.ProductModule;
 using ECommerce.ServiceAbstraction;
 using ECommerce.Services.Specification;
+using ECommerce.Shared;
 using ECommerce.Shared.DTOS.ProductDtos;
 using System;
 using System.Collections.Generic;
@@ -28,10 +29,10 @@ namespace ECommerce.Services
 
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(int? BrandId, int? TypeId)
+        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(ProductQueryParams queryParams)
         {
-           var Spec=new ProductWithBrandAndTypeSpecification(BrandId,TypeId);
-            var products= await _unitOfWork.GetRepository<Product,int>().GetAllAsync(Spec);
+            var spec = new ProductWithBrandAndTypeSpecification(queryParams);
+            var products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(spec);
             return _mapper.Map<IEnumerable<ProductDto>>(products);
         }
 
