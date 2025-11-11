@@ -11,18 +11,38 @@ namespace ECommerce.Services.Specification
 {
     public class BaseSpecification<TEntity, TKey> : ISpecification<TEntity, TKey> where TEntity : BaseEntity<TKey>
     {
-        public ICollection<Expression<Func<TEntity, object>>> IncludeExpression{ get; } = [];
 
-        public Expression<Func<TEntity, bool>> Criteria { get;  }
+        #region Criteria
+        public Expression<Func<TEntity, bool>> Criteria { get; }
         public BaseSpecification(Expression<Func<TEntity, bool>> CriteriaExp)
         {
             Criteria = CriteriaExp;
-        }
+        } 
+        #endregion
 
-        //Method to add include expressions
+
+        #region Order
+        public Expression<Func<TEntity, object>> OrderBy { get; private set; }
+
+        public Expression<Func<TEntity, object>> OrderByDescending { get; private set; }
+        protected void AddOrderBy(Expression<Func<TEntity, object>> orderByExp)
+        {
+            OrderBy = orderByExp;
+        }
+        protected void AddOrderByDescending(Expression<Func<TEntity, object>> orderByDescExp)
+        {
+            OrderByDescending = orderByDescExp;
+        }
+        #endregion
+        #region include
+        public ICollection<Expression<Func<TEntity, object>>> IncludeExpression { get; } = [];
         protected void AddInclude(Expression<Func<TEntity, object>> includeExp)
         {
             IncludeExpression.Add(includeExp);
         }
+
+        #endregion
+
+
     }
 }

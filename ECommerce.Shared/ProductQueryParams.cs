@@ -11,5 +11,6 @@ namespace ECommerce.Shared
         public int? BrandId { get; set; }
         public int? TypeId { get; set; }
         public string? Search { get; set; }
+        public ProductSortingOptions? Sort { get; set; } // FIX: Change type from ProductQueryParams? to ProductSortingOptions?
     }
 }
