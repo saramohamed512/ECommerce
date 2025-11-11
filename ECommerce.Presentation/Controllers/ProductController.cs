@@ -21,9 +21,9 @@ namespace ECommerce.Presentation.Controllers
 
         #region Get All Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts(int? brandId, int? typeId)
         {
-            var products = await _productService.GetAllProductsAsync();
+            var products = await _productService.GetAllProductsAsync(brandId, typeId);
             return Ok(products);
         }
         #endregion
