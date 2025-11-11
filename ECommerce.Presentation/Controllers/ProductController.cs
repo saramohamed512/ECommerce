@@ -23,7 +23,7 @@ namespace ECommerce.Presentation.Controllers
         #region Get All Products
         [HttpGet]
         //brandID typeID
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts([FromQuery]ProductQueryParams productPram)
+        public async Task<ActionResult<PaginatedResult<ProductDto>>> GetAllProducts([FromQuery]ProductQueryParams productPram)
         {
             var products = await _productService.GetAllProductsAsync(productPram);
             return Ok(products);
