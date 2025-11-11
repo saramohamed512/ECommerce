@@ -41,5 +41,11 @@ namespace ECommerce.Persistence.Repositories
 
         }
 
+        public async Task<TEntity?> GetByIdAsync(ISpecification<TEntity, TKey> specification)
+        {
+           return await SpecificationEvaluator
+                .CreateQuery(_dbContext.Set<TEntity>(), specification)
+                .FirstOrDefaultAsync();
+        }
     }
 }
