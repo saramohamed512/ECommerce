@@ -37,6 +37,8 @@ namespace ECommerce.Services.Specification
                     break;
             }
 
+            ApplyPagination(queryParams.PageSize, queryParams.PageIndex);
+
         }
         public ProductWithBrandAndTypeSpecification(int id): base(p => p.Id == id)
         {

@@ -36,13 +36,29 @@ namespace ECommerce.Services.Specification
         #endregion
         #region include
         public ICollection<Expression<Func<TEntity, object>>> IncludeExpression { get; } = [];
+
+     
         protected void AddInclude(Expression<Func<TEntity, object>> includeExp)
         {
             IncludeExpression.Add(includeExp);
         }
 
         #endregion
+        #region Pagination
+        public int Take { get; private set; }
 
+        public int Skip { get; private set; }
+
+        public bool IsPaginated { get;  set; }
+        protected void ApplyPagination(int pageSize, int pageIndex)
+        {
+           
+            Take = pageSize;
+            Skip = (pageIndex - 1) * pageSize;//(3-1)*10=20
+            IsPaginated = true;
+        }
+
+        #endregion
 
     }
 }
