@@ -33,6 +33,7 @@ namespace ECommerce.web
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddAutoMapper(X => X.AddProfile(new ProductProfile()));
+            builder.Services.AddAutoMapper(X => X.AddProfile(new BasketProfile()));
 
             builder.Services.AddScoped<IProductService, ProductService>();
 
@@ -41,6 +42,8 @@ namespace ECommerce.web
             { 
                 return ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisConnection")!);
             });
+
+            builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
             var app = builder.Build();
 
