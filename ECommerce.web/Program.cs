@@ -44,6 +44,7 @@ namespace ECommerce.web
             });
 
             builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+            builder.Services.AddScoped<IBasketService, BasketService>();
 
             var app = builder.Build();
 
