@@ -27,6 +27,7 @@ namespace ECommerce.Presentation.Controllers
         }
         #endregion
         #region Create or Update Basket
+        [HttpPost]
         public async Task<ActionResult<BasketDTO>> CreateOrUpdateBasket(BasketDTO basket)
         {
             var updatedBasket= await _basketService.CreateOrUpdateBasketAsync(basket);
