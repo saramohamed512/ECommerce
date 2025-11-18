@@ -7,6 +7,7 @@ using ECommerce.ServiceAbstraction;
 using ECommerce.Services;
 using ECommerce.Services.MappingProfiles;
 using ECommerce.web.Extentions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
@@ -57,7 +58,30 @@ namespace ECommerce.web
             await app.SeedDbAsync();
             #endregion
 
+
             // Configure the HTTP request pipeline.
+
+            //Exception Middleware
+            app.Use(async(Context , next)=>
+            {
+                try
+                {
+                    await next.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    //log exception
+                    Context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                    await Context.Response.WriteAsJsonAsync(new 
+                    {
+                       StatusCode= Context.Response.StatusCode = StatusCodes.Status500InternalServerError,
+                        Error = $"An unexpected error occurred: {ex.Message}"
+
+
+                    });
+                }
+            });
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
