@@ -1,4 +1,5 @@
-﻿using ECommerce.ServiceAbstraction;
+﻿using ECommerce.Presentation.Attributes;
+using ECommerce.ServiceAbstraction;
 using ECommerce.Shared;
 using ECommerce.Shared.DTOS.ProductDtos;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,7 @@ namespace ECommerce.Presentation.Controllers
 
         #region Get All Products
         [HttpGet]
+        [RedisCache]
         //brandID typeID
         public async Task<ActionResult<PaginatedResult<ProductDto>>> GetAllProducts([FromQuery]ProductQueryParams productPram)
         {
