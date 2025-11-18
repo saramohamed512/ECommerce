@@ -6,9 +6,12 @@ using ECommerce.Persistence.Repositories;
 using ECommerce.ServiceAbstraction;
 using ECommerce.Services;
 using ECommerce.Services.MappingProfiles;
+using ECommerce.web.CustomMiddleWares;
 using ECommerce.web.Extentions;
+using ECommerce.web.Factories;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
@@ -50,6 +53,11 @@ namespace ECommerce.web
             builder.Services.AddScoped<ICachRepository, CachRepository>();
             builder.Services.AddScoped<ICacheService, CacheService>();
 
+            builder.Services.Configure<Microsoft.AspNetCore.Mvc.ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory =ApiResponseFactory.GenerateApiValidationResponse;
+            });
+
             var app = builder.Build();
 
 
@@ -63,8 +71,7 @@ namespace ECommerce.web
             // Configure the HTTP request pipeline.
 
             //Exception Middleware
-            app.UseMiddleware<ExceptionHandlerMiddleware>();
-            
+            app.UseMiddleware<ExceptionHandlerMiddleWare>();
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
