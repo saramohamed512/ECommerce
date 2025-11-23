@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Presentation.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class BasketController: ControllerBase
+    
+    public class BasketController: ApiBaseController
     {
         private readonly IBasketService _basketService;
         public BasketController(IBasketService basketService)

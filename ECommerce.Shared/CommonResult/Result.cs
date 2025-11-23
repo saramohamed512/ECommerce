@@ -63,5 +63,18 @@ namespace ECommerce.Shared.CommonResult
         {
             return new Result<T>(errors);
         }
+        public static implicit operator Result<T>(T value)
+        {
+            return Ok(value);
+        }
+        public static implicit operator Result<T>(Error error)
+        {
+            return Fail(error);
+        }
+        public static implicit operator Result<T>(List<Error> errors)
+        {
+            return Fail(errors);
+        }
+
     }
 }

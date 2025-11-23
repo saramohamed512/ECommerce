@@ -42,7 +42,7 @@ namespace ECommerce.web.CustomMiddleWares
 
         private static async Task HandelNotFoundPointAsync(HttpContext Context)
         {
-            if (Context.Response.StatusCode == StatusCodes.Status404NotFound)
+            if (Context.Response.StatusCode == StatusCodes.Status404NotFound && !Context.Response.HasStarted)
             {
                 var Problem = new ProblemDetails()
                 {
