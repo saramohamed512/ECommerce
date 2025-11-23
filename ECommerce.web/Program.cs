@@ -2,6 +2,7 @@
 using ECommerce.Domain.Contracts;
 using ECommerce.Persistence.Data.DataSeed;
 using ECommerce.Persistence.Data.DbContext;
+using ECommerce.Persistence.IdentityData.DbContexts;
 using ECommerce.Persistence.Repositories;
 using ECommerce.ServiceAbstraction;
 using ECommerce.Services;
@@ -58,12 +59,19 @@ namespace ECommerce.web
                 options.InvalidModelStateResponseFactory =ApiResponseFactory.GenerateApiValidationResponse;
             });
 
+            builder.Services.AddDbContext<StoreIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
+                // Add-Migration "IdentityTableCreate" -OutputDir "Identity/Migrations" -Context "StoreIdentityDbContext"
+            });
+
             var app = builder.Build();
 
 
             #region DataSeed
 
             await app.MigrateDbAsync();
+            await app.MigrateIdentityDbAsync();
             await app.SeedDbAsync();
             #endregion
 
