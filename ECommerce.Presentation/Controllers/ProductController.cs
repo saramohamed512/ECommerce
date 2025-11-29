@@ -2,6 +2,7 @@
 using ECommerce.ServiceAbstraction;
 using ECommerce.Shared;
 using ECommerce.Shared.DTOS.ProductDtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace ECommerce.Presentation.Controllers
         }
 
         #region Get All Products
+        [Authorize]
         [HttpGet]
         [RedisCache]
         //brandID typeID
