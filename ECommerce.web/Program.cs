@@ -47,6 +47,7 @@ namespace ECommerce.web
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddAutoMapper(X => X.AddProfile(new ProductProfile()));
             builder.Services.AddAutoMapper(X => X.AddProfile(new BasketProfile()));
+            builder.Services.AddAutoMapper(X => X.AddProfile(new OrderProfile()));
 
             builder.Services.AddScoped<IProductService, ProductService>();
 
@@ -97,6 +98,7 @@ namespace ECommerce.web
                    
                 };
             });
+            builder.Services.AddScoped<IOrderService, OrderService>();
 
             var app = builder.Build();
 
