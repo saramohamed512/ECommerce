@@ -26,6 +26,27 @@ namespace ECommerce.Presentation.Controllers
             var Result = await _orderService.CreateOrderAsync(orderDTO, GetEmailFromToken());
             return HandleResult(Result);
         }
-     
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<OrderToReturnDTO>>> GetOrders()
+        {
+            var Result = await _orderService.GetAllOrdersAsync(GetEmailFromToken());
+            return HandleResult(Result);
+
+
+        }
+        [Authorize]
+        [HttpGet("{id:guid}")]
+        public async Task<ActionResult<OrderToReturnDTO>> GetOrder(Guid id)
+        {
+            var Result = await _orderService.GetOrderByIdAsync(id, GetEmailFromToken());
+            return HandleResult(Result);
+        }
+        [HttpGet("deliveryMethods")]
+        public async Task<ActionResult<IEnumerable<DeliveryMethodDTO>>> GetDeliveryMethods()
+        {
+            var Result = await _orderService.GetDeliveryMethods();
+            return HandleResult(Result);
+        }
     }
 }
