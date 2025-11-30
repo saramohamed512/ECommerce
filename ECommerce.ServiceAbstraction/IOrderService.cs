@@ -11,5 +11,8 @@ namespace ECommerce.ServiceAbstraction
     public interface IOrderService
     {
         Task<Result<OrderToReturnDTO>> CreateOrderAsync(OrderDTO orderDTO,string Email);
+        Task<Result<IEnumerable<OrderToReturnDTO>>> GetAllOrdersAsync(string Email);
+        Task<Result<IEnumerable<DeliveryMethodDTO>>> GetDeliveryMethods();
+        Task<Result<OrderToReturnDTO>> GetOrderByIdAsync(Guid id, string Email);
     }
 }

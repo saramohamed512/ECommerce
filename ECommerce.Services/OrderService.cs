@@ -3,6 +3,7 @@ using ECommerce.Domain.Contracts;
 using ECommerce.Domain.Entities.Orders;
 using ECommerce.Domain.Entities.ProductModule;
 using ECommerce.ServiceAbstraction;
+using ECommerce.Services.Specification;
 using ECommerce.Shared.CommonResult;
 using ECommerce.Shared.DTOS.OrderDTOs;
 using System;
@@ -80,6 +81,43 @@ namespace ECommerce.Services
                 Price = Product.Price,
                 Quantity = item.Quantity
             };
+        }
+
+        public async Task<Result<IEnumerable<OrderToReturnDTO>>> GetAllOrdersAsync(string Email)
+        {
+            var Spec=new OrderSpecification(Email);
+            var Orders = await _unitOfWork.GetRepository<Order, Guid>()
+                .GetAllAsync(Spec);
+            if(!Orders.Any())
+                {
+                return Error.NotFound("No orders found for this user!");
+            }
+            var orderDTOs = _mapper.Map<IEnumerable<OrderToReturnDTO>>(Orders);
+            return Result<IEnumerable<OrderToReturnDTO>>.Ok(orderDTOs);
+        }
+
+        public async Task<Result<IEnumerable<DeliveryMethodDTO>>> GetDeliveryMethods()
+        {
+            var deliveryMethods = await _unitOfWork.GetRepository<DeliveryMethod, int>().GetAllAsync();
+            if(!deliveryMethods.Any())
+            {
+                return Error.NotFound("No delivery methods found!");
+
+            }
+            var deliveryMethodDTOs = _mapper.Map<IEnumerable<DeliveryMethod>, IEnumerable<DeliveryMethodDTO>>(deliveryMethods);
+            return Result<IEnumerable<DeliveryMethodDTO>>.Ok(deliveryMethodDTOs);
+        }
+
+        public async Task<Result<OrderToReturnDTO>> GetOrderByIdAsync(Guid id, string Email)
+        {
+            var Spec=new OrderSpecification(id,Email);
+            var order =  await _unitOfWork.GetRepository<Order, Guid>()
+                .GetByIdAsync(Spec);
+            if(order is null)
+                {
+                return Error.NotFound("Order not found!");
+            }
+            return _mapper.Map<OrderToReturnDTO>(order);
         }
     }
 }
