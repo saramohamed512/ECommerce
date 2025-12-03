@@ -62,6 +62,7 @@ namespace ECommerce.web
             builder.Services.AddScoped<ICachRepository, CachRepository>();
             builder.Services.AddScoped<ICacheService, CacheService>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddScoped<IPaymentService, PaymentService>();
 
             builder.Services.Configure<Microsoft.AspNetCore.Mvc.ApiBehaviorOptions>(options =>
             {
