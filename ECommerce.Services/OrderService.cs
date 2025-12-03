@@ -33,6 +33,20 @@ namespace ECommerce.Services
             {
                 return Error.NotFound("Basket not found!");
             }
+
+            ArgumentNullException.ThrowIfNullOrEmpty(basket.PaymentIntentId);
+            var OrderRepo= _unitOfWork.GetRepository<Order,Guid>();
+            var Spec= new OrderWithPaymentIntentSpecification(basket.PaymentIntentId);
+            var ExistOrder= await OrderRepo.GetByIdAsync(Spec);
+            if(ExistOrder is not null)
+            {
+                OrderRepo.Remove(ExistOrder);
+            }
+
+
+
+
+
             List<OrderItem> orderItems = new List<OrderItem>();
             foreach (var item in basket.Items)
             {
@@ -56,7 +70,8 @@ namespace ECommerce.Services
                 Address = orderAddress,
                 DeliveryMethod = deliveryMethod,
                 Items = orderItems,
-                Subtotal = subtotal
+                Subtotal = subtotal,
+                PaymentIntentId = basket.PaymentIntentId
             };
             await _unitOfWork.GetRepository<Order,Guid>().AddAsync(order);
             int Result = await _unitOfWork.SaveChangesAsync();
